@@ -131,14 +131,25 @@
             <ul>
               <li><i class="ri-check-double-line"></i> Advisor to B2B Marketers, Agencies, Publishers, Influencers, and Large Aggregators.</li>
               <li><i class="ri-check-double-line"></i> Understand analysis and business landscape, and how to put strategies in place to improve business.</li>
+              <li><i class="ri-check-double-line"></i> Talk it out with Trusted Connectors -Current scenario such as inputs and the outputs that are delivered 
+              											including types of leads, prices, targets, communications, markets etc.</li>
             </ul>
           </div>
           <div class="col-lg-6 pt-4 pt-lg-0">
+          <h2>How We Lead Together</h2>
             <p>
+              We offer relationships built on client needs and expectations. Helping you understand 
+              our services to utilise at their fullest potential.
+            </p>
+            <h2>Your  Goal is our Soul</h2>
+            <p>
+              Help us understand your Expectations Entire Budget, lead types, vendors, communications, delivery types etc.
+            </p>
+           <!--  <p>
               We enable access to best-of-breed b2b lead generation solution providers, publishers and b2b data providers. 
               We help you identify and select the best b2b solution provider for each particular program 
               so that you start achieving desired results quickly and improve your ROI.
-            </p>
+            </p> -->
             <a href="#" class="btn-learn-more">Learn More</a>
           </div>
         </div>
@@ -398,7 +409,7 @@
                 <p>+91 8878688889<br></p>
               </div>
 
-              <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12097.433213460943!2d-74.0062269!3d40.7101282!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb89d1fe6bc499443!2sDowntown+Conference+Center!5e0!3m2!1smk!2sbg!4v1539943755621" frameborder="0" style="border:0; width: 100%; height: 290px;" allowfullscreen></iframe>
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3782.2853859001357!2d73.94254101489342!3d18.561168187385327!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2c3dbcbd5f12f%3A0xcd7dd569ee6edd06!2sCity%20Vista!5e0!3m2!1sen!2sin!4v1589883000648!5m2!1sen!2sin" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
             </div>
 
           </div>
@@ -450,7 +461,8 @@
                 <div class="error-message"></div>
                 <div class="sent-message">Your message has been sent. Thank you!</div>
               </div>
-              <div class="text-center"><button type="submit">Send Message</button></div>
+              <!-- <div class="text-center"><button type="submit">Send Message</button></div> -->
+              <button type="button" class="btn btn-primary" onClick="return sendEmail()">Send Message</button>
             </form>
           </div>
 
@@ -551,6 +563,44 @@
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
 
+<script>
+function sendEmail(){
+var map = {};
+var content ="Hi,<br> Below are details submitted.<br><br>";
+content = content + "<ol><li>Name :"+$("#name").val()+".</li>";
+content = content + "<li>Business EmailID :"+$("#email").val()+".</li>";
+content = content + "<li>Phone No :"+$("#Phone").val()+".</li>";
+content = content + "<li>CompanyName :"+$("#CompanyName").val()+".</li>";
+content = content + "<li>CompanyType :"+$("#CompanyType").val()+".</li>";
+content = content + "<li>More Details :"+$("#message").val()+".</li></ol><br><br>";
+content = content + "Thanks and Regards,<br> Laedozz. <br><br>";
+map["custMobileNo"]="";
+map["custEmail"]="jalaj.purohit@gmail.com";
+map["vendorMo"]="";
+map["vendorEmail"]="pranjal.khatri@leadozz.com";
+map["customerSMSContent"]="";
+map["vendorSMSContent"]="";
+map["emailContent"]=content;
+map["emailSub"]="Notification to Leadozz";
+map["smsStatus"]="2";
+
+$.ajax({
+ type: 'POST',
+ url: "http://ec2-13-233-25-151.ap-south-1.compute.amazonaws.com:8080/MaheshGym/ulwaeNotifn",
+ data: 'customerJson='+JSON.stringify(map),
+ success: function (response) {
+ alert(response);
+
+},
+ error : function (response) {
+$('#lodaingModal').modal('hide');
+$("#closeButton").show();
+alert(response);
+}
+
+});
+}
+</script> 
 </body>
 
 </html>
