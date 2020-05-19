@@ -192,7 +192,12 @@
   });
   
 
-  function sendEmail(){
+  
+  
+
+})(jQuery);
+
+function sendEmail(){
 	  var map = {};
 	  var content ="Hi,<br> Below are the details submitted.<br><br>";
 	  content = content + "<ol><li>Name :"+$("#name").val()+".</li>";
@@ -229,7 +234,4 @@
 	  }
 	
 	  });
-  }
-  
-
-})(jQuery);
+}
