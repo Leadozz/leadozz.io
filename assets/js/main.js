@@ -1,9 +1,4 @@
-/**
-* Template Name: Arsha - v2.0.0
-* Template URL: https://bootstrapmade.com/arsha-free-bootstrap-html-template-corporate/
-* Author: BootstrapMade.com
-* License: https://bootstrapmade.com/license/
-*/
+
 !(function($) {
   "use strict";
 
@@ -195,5 +190,46 @@
   $(window).on('load', function() {
     aos_init();
   });
+  
+
+  function sendEmail(){
+	  var map = {};
+	  var content ="Hi,<br> Below are the details submitted.<br><br>";
+	  content = content + "<ol><li>Name :"+$("#name").val()+".</li>";
+	  content = content + "<li>Business EmailID :"+$("#email").val()+".</li>";
+	  content = content + "<li>Phone No :"+$("#Phone").val()+".</li>";
+	  content = content + "<li>CompanyName :"+$("#CompanyName").val()+".</li>";
+	  content = content + "<li>CompanyType :"+$("#CompanyType").val()+".</li>";
+	  content = content + "<li>More Details :"+$("#message").val()+".</li></ol><br><br>";
+	  content = content + "Thanks and Regards,<br> Leadozz. <br><br>";
+	  map["custMobileNo"]="";
+	  map["custEmail"]="jalaj.purohit@gmail.com";
+	  map["vendorMo"]="";
+	  /*map["vendorEmail"]="pranjal.khatri@leadozz.com";*/
+	  map["vendorEmail"]="jalaj.purohit@gmail.com";
+	  map["customerSMSContent"]="";
+	  map["vendorSMSContent"]="";
+	  map["emailContent"]=content;
+	  map["emailSub"]="Notification to Leadozz";
+	  map["smsStatus"]="2";
+	
+	  $.ajax({
+	   type: 'POST',
+	   url: "http://ec2-13-233-25-151.ap-south-1.compute.amazonaws.com:8080/MaheshGym/ulwaeNotifn",
+	   data: 'customerJson='+JSON.stringify(map),
+	   success: function (response) {
+	   /* alert(response); */
+	   alert("Thanks for Contact-Us.");
+	
+	  },
+	   error : function (response) {
+	  $('#lodaingModal').modal('hide');
+	  $("#closeButton").show();
+	  alert(response);
+	  }
+	
+	  });
+  }
+  
 
 })(jQuery);
