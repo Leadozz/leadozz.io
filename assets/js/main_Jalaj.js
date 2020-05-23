@@ -198,6 +198,24 @@
 })(jQuery);
 
 function sendEmail(){
+	
+	if($("#name").val() == '' ){
+		   alert('Please enter your Name.');
+		   $("#name").focus()
+		   return false;
+	   	}
+		 if($("#email").val() == '' ){
+		   alert('Please enter a valid business email.');
+		 $("#email").focus()
+		   return false;
+	   	}
+		 if($("#Phone").val() == '' ){
+		   alert('Please enter 10 digit Phone/Mobile Number.');
+		   $("#Phone").focus()
+		   return false;
+	   
+		 }
+		   
 	var content ="Hi,<br> Below enquiry details from Leadozz Contact-Us.<br><br>";
 	content = content + "<ol><li>Name :"+$("#name").val()+".</li>";
 	content = content + "<li>Business EmailID :"+$("#email").val()+".</li>";
@@ -211,7 +229,7 @@ function sendEmail(){
 	 url: "http://ec2-13-233-25-151.ap-south-1.compute.amazonaws.com:8080/MaheshGym/leadozzNotifn",
 	 data: 'content='+content,
 	 success: function (response) {
-	 alert(response);
+		 alert('Thank you for Contact-Us.')
 
 	},
 	 error : function (response) {
@@ -220,3 +238,5 @@ function sendEmail(){
 
 	});
 	}
+		 
+		 
