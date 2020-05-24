@@ -224,10 +224,13 @@ function sendEmail(){
 	content = content + "<li>CompanyType :"+$("#CompanyType").val()+".</li>";
 	content = content + "<li>More Details :"+$("#message").val()+".</li></ol><br><br>";
 	content = content + "Thanks and Regards,<br> Laedozz. <br><br>";
+	
+	var data = '{"content":"'+content+'"}';
+	
 	$.ajax({
 	 type: 'POST',
-	 url: "http://ec2-13-233-25-151.ap-south-1.compute.amazonaws.com:8080/MaheshGym/leadozzNotifn",
-	 data: 'content='+content,
+	 url: "https://fbl7sja8b0.execute-api.ap-south-1.amazonaws.com/dev/snedNotifn",
+	 data: data,
 	 success: function (response) {
 		 alert('Thank you for Contact-Us.')
 
