@@ -233,7 +233,7 @@ function sendEmail(){
 	 data: data,
 	 success: function (response) {
 		 alert('Thank you for Contact-Us.')
-
+		 location.reload();
 	},
 	 error : function (response) {
 	alert(response);
