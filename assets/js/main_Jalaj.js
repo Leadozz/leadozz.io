@@ -1,4 +1,4 @@
-
+var context = "https://5vvnjl5hii.execute-api.ap-south-1.amazonaws.com/dev/LD/";
 !(function($) {
   "use strict";
 
@@ -166,6 +166,7 @@
 
     // Initiate venobox (lightbox feature used in portofilo)
     $(document).ready(function() {
+		getData();
       $('.venobox').venobox({
         'share': false
       });
@@ -197,7 +198,13 @@
 
 })(jQuery);
 
-function sendEmail(){
+
+function hidePopup(){
+	$('#lodaingModal').modal('hide');
+}
+
+
+function sendEmail(obj){
 	
 	if($("#name").val() == '' ){
 		   alert('Please enter your Name.');
@@ -215,31 +222,122 @@ function sendEmail(){
 		   return false;
 	   
 		 }
-		   
-	var content ="Hi,<br> Below enquiry details from Leadozz Contact-Us.<br><br>";
-	content = content + "<ol><li>Name :"+$("#name").val()+".</li>";
-	content = content + "<li>Business EmailID :"+$("#email").val()+".</li>";
-	content = content + "<li>Phone No :"+$("#Phone").val()+".</li>";
-	content = content + "<li>CompanyName :"+$("#CompanyName").val()+".</li>";
-	content = content + "<li>CompanyType :"+$("#CompanyType").val()+".</li>";
-	content = content + "<li>More Details :"+$("#message").val()+".</li></ol><br><br>";
-	content = content + "Thanks and Regards,<br> Laedozz. <br><br>";
-	
-	var data = '{"content":"'+content+'"}';
+   $(obj).attr('disabled',true);
+    $(obj).attr('value','Please wait ...');  
+	var content ="</li><li>CompanyName :"+$("#CompanyName").val()+"</li>";
+	content = content + "<li>CompanyType :"+$("#CompanyType").val();	
+	var map={}
+    map["name"]=$("#name").val();
+    map["emailid"]=$("#email").val();
+    map["phoneNo"]=$("#Phone").val();
+    map["message"]=$("#message").val();
+	map["otherDetails"]=content;
 	
 	$.ajax({
 	 type: 'POST',
-	 url: "https://fbl7sja8b0.execute-api.ap-south-1.amazonaws.com/dev/snedNotifn",
-	 data: data,
+	 url: context + "sendEmail",
+	 data: JSON.stringify(map),
 	 success: function (response) {
 		 alert('Thank you for Contact-Us.')
 		 location.reload();
 	},
 	 error : function (response) {
-	alert(response);
+		alert(response);
+		 location.reload();
 	}
 
 	});
+}
+
+function getData(){
+	if("Y" != sessionStorage.getItem("LDdetails")){
+		sessionStorage.setItem("LDdetails","Y");
+		var d={};		
+		$.getJSON('https://ipapi.co/json/', function(data) {
+			d["ip"]=data["ip"];
+			d["city"]=data["city"];
+			d["internet"]=data["org"];
+			d["postal"]=data["postal"];
+			d["region"]=data["region"];
+			d["country"]=data["country_name"];		
+				$.ajax({
+				 type: 'POST',
+				 data: btoa(JSON.stringify(d)),
+				 url: context + "requestDetails",
+				 success: function (response) {
+						
+					}
+				});			
+		});
 	}
-		 
-		 
+}
+
+function checkPassword(){
+	$('#lodaingModal').modal('show');
+			var data = '{"password":"'+$("#password").val()+'"}';
+			$.ajax({
+			  type: 'POST',
+			  url: context + "checkPassword",
+			  data : data,
+			  success: function (response) { 
+					setTimeout(hidePopup, 500);
+					$("#usageForm").show();
+					},
+			  error : function (response) { 
+					setTimeout(hidePopup, 500);				
+					alert("Invalid Password");
+					
+					}
+
+			});
+		}
+
+function checkUsages(){
+	
+	if($("#fromDate").val() == "" || $("#toDate").val() == "" ){
+			alert("Please enter From date / To date");
+			return false;
+	}
+	
+	$('#lodaingModal').modal('show');
+			var map={};
+			map["fromDate"]=$("#fromDate").val();
+			map["toDate"]=$("#toDate").val();
+			map["password"]=$("#password").val();
+			
+			$.ajax({
+			  type: 'POST',
+			  url: context + "getDetails",
+			  data : JSON.stringify(map),
+			  success: function (response) { 
+					setTimeout(hidePopup, 500);
+					//$("#moneyCalcForm").show();
+					showUsageTable(response);
+					},
+			  error : function (response) { 
+					setTimeout(hidePopup, 500);				
+					alert(response.responseJSON);
+					
+					}
+
+			});
+	
+	
+}	
+
+function showUsageTable(response1){
+var str = "<table id='moneyCalcTable' class='table table-striped table-bordered table-hover'><thead><tr><td >#</td><td width='25%'>Date Time</td><td >IP Address</td><td >City</td><td >Postal Code</td><td>Region</td><td>Country</td><td>Internet Provider</td></tr></thead><tbody>";
+	var totalAmount = 0;
+	var totalComm = 0;
+	
+	$(response1).each(function(i,response){
+		str = str + "<tr><td>"+(++i)+"</td><td>"+$(response).attr('dateTime')+"</td><td>"+$(response).attr('ip')+"</td><td>"+$(response).attr('city')+"</td><td>"+$(response).attr('postal')+"</td><td>"+$(response).attr('region')+"</td><td>"+$(response).attr('country')+"</td><td>"+$(response).attr('internet')+"</td></tr>";
+	});
+	
+	str = str+"</tbody></table>";	
+	$("#showUsageTable").html(str);
+	
+	$("#usageSummaryTable").html("<b>Total Hit count was "+$(response1).length +" between "+ $("#fromDate").val() + " and "+$("#toDate").val()+"</b>");
+}
+
+	
