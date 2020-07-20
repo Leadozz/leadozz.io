@@ -1,4 +1,4 @@
-var context = "https://5vvnjl5hii.execute-api.ap-south-1.amazonaws.com/dev/LD/";
+var context = "https://5vvnjl5hii.execute-api.ap-south-1.amazonaws.com/dev/UO/";
 !(function($) {
   "use strict";
 
